@@ -2,9 +2,9 @@
 
 # DESARROLLADORES:
 
-Diego Emanuel Chavez Ramos
-Elmer Gustavo Illanes Tarqui
-Juan Daniel Calle Quispe
+- Diego Emanuel Chavez Ramos
+- Elmer Gustavo Illanes Tarqui
+- Juan Daniel Calle Quispe
 
 
 ## Requisitos
