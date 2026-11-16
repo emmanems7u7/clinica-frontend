@@ -1,90 +1,84 @@
-# Frontend Clínica Odontológica (React + Vite)
+# Clínica Odontológica – Frontend
 
-Parte 2: panel web **independiente** que consume la API REST de la Parte 1 (Laravel + Sanctum). Proyecto propio, con su carpeta, sus dependencias y su servidor de desarrollo. No se copia dentro del proyecto Laravel.
+# DESARROLLADORES:
 
-Tecnología: React 18, React Router 6, Vite 5, Font Awesome 6 (iconos `fas fa-…`, instalado por npm, funciona sin internet) y CSS propio.
+Diego Emanuel Chavez Ramos
+Elmer Gustavo Illanes Tarqui
+Juan Daniel Calle Quispe
 
-## 1. Requisitos
 
-- Node.js 18 o superior (`node -v`).
-- La API de la Parte 1 funcionando (`php artisan serve` y `php artisan migrate --seed` ya ejecutados).
+## Requisitos
+- Node.js 18 o superior.
+- npm.
+- Backend Laravel ejecutándose.
 
-## 2. Instalación
+## 1. Instalar dependencias
 
-Descomprima el zip en **una carpeta aparte** (por ejemplo, junto a `clinica-api`):
-
-```
-proyectos/
-├── clinica-api/        ← Parte 1 (Laravel)
-└── clinica-frontend/   ← esta parte (React)
-```
+Abrir una terminal en la carpeta del proyecto:
 
 ```bash
 cd clinica-frontend
 npm install
 ```
 
-## 3. Configurar
+## 2. Configurar conexión con el backend
 
-Edite `.env` (ya viene creado; la plantilla es `.env.example`):
+Crear el archivo `.env` en la raíz del proyecto:
 
 ```env
 VITE_API_URL=http://localhost:8000
 ```
 
-Es la dirección de la API, **sin** `/api/v1`.
+Esta es la URL del backend Laravel, sin `/api/v1`.
 
-En el `.env` de **Laravel** debe estar el origen del frontend (ya viene así en `env.additions.txt`):
+## 3. Configurar CORS en Laravel
+
+En el `.env` del backend agregar:
 
 ```env
 CORS_ALLOWED_ORIGINS=http://localhost:5173
 ```
 
-Si lo cambió, reinicie la API (`php artisan config:clear` y `php artisan serve`).
+Después ejecutar en el backend:
 
-## 4. Ejecutar
+```bash
+php artisan config:clear
+```
+
+## 4. Ejecutar el frontend
+
+Desde la carpeta del frontend:
 
 ```bash
 npm run dev
 ```
 
-Abra http://localhost:5173 e ingrese con el admin del seeder (`SEED_ADMIN_EMAIL` y `SEED_ADMIN_PASSWORD` de su `.env`).
+Abrir en el navegador:
 
-## 5. Estructura
+http://localhost:5173
 
-```
-src/
-├── main.jsx                  entrada y proveedores
-├── App.jsx                   rutas y protección de rutas privadas
-├── styles.css                estilos y animaciones
-├── api/client.js             fetch con Bearer token y manejo de errores/401
-├── auth/AuthContext.jsx      sesión, usuario, permisos (can)
-├── config/resources.js       columnas, campos, icono y color de cada módulo
-├── hooks/useLock.js          bloquea envíos repetidos (doble clic / Enter)
-├── components/               Layout, DataTable, FormModal, Btn, Loader, Logo, Toast, Dialog
-└── pages/                    Login, Dashboard, ResourcePage (CRUD genérico)
-```
+Iniciar sesión con las credenciales del administrador configuradas en los seeders del backend (`SEED_ADMIN_EMAIL` y `SEED_ADMIN_PASSWORD`).
 
-Para agregar un módulo nuevo basta con añadir un bloque en `src/config/resources.js` (icono Font Awesome en `icon`, por ejemplo `fa-tooth`, y `color`).
-
-## 6. Qué incluye
-
-- Login con token Bearer en `sessionStorage`; si el token expira vuelve al login. Mostrar/ocultar contraseña y aviso con animación al fallar.
-- **Anti doble envío**: todos los botones de guardar, ingresar, eliminar y cambiar estado se bloquean al instante y muestran un spinner (`useLock` + `Btn`). El formulario muestra además el logo animado mientras guarda y no se puede cerrar hasta terminar.
-- Menú y botones **según los permisos** de `/auth/me`.
-- Inicio con saludo, fecha y contadores animados.
-- CRUD con búsqueda, paginación numerada, esqueleto de carga, barra de progreso y filas animadas.
-- Citas: cambio de estado desde la tabla (la cancelación pide el motivo en un diálogo propio).
-- Diálogos de confirmación propios (sin `confirm()` ni `prompt()` del navegador) y avisos tipo toast con icono y barra de tiempo.
-- Errores 422 de la API mostrados bajo cada campo (incluye cita solapada).
-- Responsive (menú lateral colapsable en móvil) y respeta «reducir movimiento» del sistema.
-
-## 7. Producción
+## 5. Compilar para producción
 
 ```bash
-npm run build      # genera la carpeta dist/
+npm run build
 ```
 
-- Suba el contenido de `dist/` a cualquier hosting estático (Nginx, Netlify, etc.). Configure la reescritura de rutas a `index.html` (SPA).
-- Antes de compilar, ponga en `.env` la URL real de la API: `VITE_API_URL=https://api.sudominio.com`.
-- En Laravel: `CORS_ALLOWED_ORIGINS=https://app.sudominio.com`, `APP_DEBUG=false` y todo bajo **HTTPS**.
+Se generará la carpeta `dist/` con los archivos listos para desplegar.
+
+## Comandos disponibles
+
+| Comando | Descripción |
+|---|---|
+| `npm install` | Instala dependencias. |
+| `npm run dev` | Levanta el frontend. |
+| `npm run build` | Compila para producción. |
+| `npm run preview` | Previsualiza la compilación. |
+
+## Importante
+
+- El frontend y backend son proyectos independientes.
+- Cada proyecto debe ejecutarse en su propia terminal.
+- No subir `node_modules`, `dist` ni archivos `.env` a GitHub.
+- Si cambia la URL del backend, reiniciar Vite.
